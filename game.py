@@ -1,0 +1,105 @@
+
+from player import RandomComputerPlayer, HumanPlayer
+
+
+class TicTacToe():
+    def __init__(self) :
+        self.board = self.make_board()
+        self.current_winner = None
+        self.print_board_nums()
+
+    @staticmethod
+    def make_board():
+        # Create a board in list form
+        return [' ' for _ in range(9)]
+    
+    def print_board(self):
+        for i in range(0,8,3):
+            print(f"| {self.board[i]} | {self.board[i+1]} | {self.board[i+2]} |")
+        print()
+
+    @staticmethod
+    def print_board_nums():
+        for i in range(0,8,3):
+            print(f"| {i} | {i+1} | {i+2} |")
+        print()
+
+    def available_move(self):
+        moves = []
+        for i in range(0,9):
+            if self.board[i] == " ":
+                moves.append(i)
+        return moves
+
+    def make_move(self, square, letter):
+        if self.board[square] == ' ':
+            self.board[square] = letter
+            if self.winner():
+                self.current_winner = letter
+            return True
+        return False
+    
+    def winner(self):
+        # Verticle
+        for i in range(0,6,3):
+            if self.board[i] == " ":
+                continue
+            if self.board[i] == self.board[i+1] and self.board[i] == self.board[i+2]:
+                return True
+
+        # Horizontal
+        for i in range(0,2):
+            if self.board[i] == " ":
+                continue
+            if self.board[i] == self.board[i+3] and self.board[i] == self.board[i+6]:
+                return True
+        
+        # Wings
+        k = self.board[5]
+        if k == " ":
+            return False
+        elif (k == self.board[0] and k == self.board[8]) or (k == self.board[3] and k == self.board[7]):
+            return True
+
+        return False
+
+    def no_empty(self):
+
+        for i in self.board:
+            if i == " ":
+                return True
+        return False
+
+def play(game, x_player, o_player):
+    turn = "X"
+    letter = "X"
+    while game.no_empty():
+        if turn == "X":
+            block = x_player.get_move(game)
+            letter = x_player.letter
+
+        elif turn == "0":
+            block = o_player.get_move(game)
+            letter = o_player.letter
+        
+        if game.make_move(block, letter):
+            game.print_board()
+
+            if game.current_winner:
+                print( letter + " wins")
+                return
+
+        if turn == "X":
+            turn = "0"
+        else : turn = "X"
+
+    print("Draw")
+
+def main():
+    x_player = HumanPlayer('X')
+    o_player = RandomComputerPlayer('0')
+    game = TicTacToe()
+    play(game, x_player, o_player)
+
+if __name__ == '__main__':
+    main()
