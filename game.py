@@ -1,6 +1,5 @@
 
-from player import RandomComputerPlayer, HumanPlayer
-
+from player import RandomComputerPlayer, HumanPlayer, AIPlayer
 
 class TicTacToe():
     def __init__(self) :
@@ -24,7 +23,7 @@ class TicTacToe():
             print(f"| {i} | {i+1} | {i+2} |")
         print()
 
-    def available_move(self):
+    def available_moves(self):
         moves = []
         for i in range(0,9):
             if self.board[i] == " ":
@@ -32,7 +31,7 @@ class TicTacToe():
         return moves
 
     def make_move(self, square, letter):
-        if self.board[square] == ' ':
+        if self.board[square] == " ":
             self.board[square] = letter
             if self.winner():
                 self.current_winner = letter
@@ -55,25 +54,24 @@ class TicTacToe():
                 return True
         
         # Wings
-        k = self.board[5]
+        k = self.board[4]
         if k == " ":
             return False
-        elif (k == self.board[0] and k == self.board[8]) or (k == self.board[3] and k == self.board[7]):
+        elif (k == self.board[0] and k == self.board[8]) or (k == self.board[2] and k == self.board[6]):
             return True
 
         return False
 
-    def no_empty(self):
+    def empty_squares(self):
+        return ' ' in self.board
 
-        for i in self.board:
-            if i == " ":
-                return True
-        return False
+    def num_empty_squares(self):
+        return self.board.count(' ')
 
 def play(game, x_player, o_player):
     turn = "X"
     letter = "X"
-    while game.no_empty():
+    while game.empty_squares():
         if turn == "X":
             block = x_player.get_move(game)
             letter = x_player.letter
@@ -87,19 +85,22 @@ def play(game, x_player, o_player):
 
             if game.current_winner:
                 print( letter + " wins")
-                return
+                return game.current_winner
 
         if turn == "X":
             turn = "0"
         else : turn = "X"
-
     print("Draw")
+    return game.current_winner
+    
 
 def main():
-    x_player = HumanPlayer('X')
-    o_player = RandomComputerPlayer('0')
+
+    x_player = AIPlayer('X')
+    o_player = AIPlayer('0')
     game = TicTacToe()
     play(game, x_player, o_player)
 
+    
 if __name__ == '__main__':
     main()
