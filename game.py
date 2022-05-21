@@ -1,11 +1,11 @@
 
 from player import RandomComputerPlayer, HumanPlayer, AIPlayer
+from gui import GUI
 
 class TicTacToe():
     def __init__(self) :
         self.board = self.make_board()
         self.current_winner = None
-        self.print_board_nums()
 
     @staticmethod
     def make_board():
@@ -40,14 +40,14 @@ class TicTacToe():
     
     def winner(self):
         # Verticle
-        for i in range(0,6,3):
+        for i in range(0,7,3):
             if self.board[i] == " ":
                 continue
             if self.board[i] == self.board[i+1] and self.board[i] == self.board[i+2]:
                 return True
 
         # Horizontal
-        for i in range(0,2):
+        for i in range(0,3):
             if self.board[i] == " ":
                 continue
             if self.board[i] == self.board[i+3] and self.board[i] == self.board[i+6]:
@@ -68,9 +68,14 @@ class TicTacToe():
     def num_empty_squares(self):
         return self.board.count(' ')
 
+    def gui_click(self, num, turn):
+            self.board[num] = turn
+
+
 def play(game, x_player, o_player):
     turn = "X"
     letter = "X"
+    game.print_board_nums()
     while game.empty_squares():
         if turn == "X":
             block = x_player.get_move(game)
@@ -93,14 +98,14 @@ def play(game, x_player, o_player):
     print("Draw")
     return game.current_winner
     
-
 def main():
 
     x_player = AIPlayer('X')
     o_player = AIPlayer('0')
     game = TicTacToe()
-    play(game, x_player, o_player)
-
+    gui = GUI(game, x_player, o_player)
     
+    # play(game, x_player, o_player)
+
 if __name__ == '__main__':
     main()
