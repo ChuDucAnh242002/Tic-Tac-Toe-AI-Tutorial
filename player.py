@@ -14,7 +14,7 @@ class Player:
         pass
 
 # a random computer player
-class RandomComputerPlayer(Player):
+class DumbPlayer(Player):
     def __init__(self, letter):
         """
         Constructor
@@ -44,6 +44,7 @@ class HumanPlayer(Player):
             else :
                 return square
 
+# AI player based on minimax algorithm
 class AIPlayer(Player):
     def __init__(self, letter):
         super().__init__(letter)

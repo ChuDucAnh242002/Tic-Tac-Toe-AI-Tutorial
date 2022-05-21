@@ -1,5 +1,5 @@
 
-from player import RandomComputerPlayer, HumanPlayer, AIPlayer
+from player import DumbPlayer, HumanPlayer, AIPlayer
 from gui import GUI
 
 class TicTacToe():
@@ -103,9 +103,9 @@ def main():
     x_player = AIPlayer('X')
     o_player = AIPlayer('0')
     game = TicTacToe()
-    gui = GUI(game, x_player, o_player)
-    
     # play(game, x_player, o_player)
+    GUI(game, x_player, o_player)
+    
 
 if __name__ == '__main__':
     main()
