@@ -50,37 +50,42 @@ class AIPlayer(Player):
         super().__init__(letter)
 
     def get_move(self, game):
-        if len(game.available_moves()) == 9:
-            square = random.choice(game.available_moves())
-        else:
-            square = self.minimax(game, self.letter)['position']
+        # if len(game.available_moves()) == 9:
+        #     square = random.choice(game.available_moves())
+        # else:
+        square = self.minimax(game, self.letter, 0)['position']
         return square
 
-    def minimax(self, state, player):
-        max_player = self.letter  # yourself
+    def minimax(self, state, player, depth):
+        max_player = self.letter  
         other_player = '0' if player == 'X' else 'X'
 
-        # first we want to check if the previous move is a winner
+        # Check if there is a winner
         if state.current_winner == other_player:
-            return {'position': None, 'score': 1 * (state.num_empty_squares() + 1) if other_player == max_player else -1 * (
-                        state.num_empty_squares() + 1)}
+            return {'position': None, 'score': 1 * depth if other_player == max_player else -1 * 
+                        depth}
+        # Check if the match is draw
         elif not state.empty_squares():
             return {'position': None, 'score': 0}
 
+        # Set the score to infinity and minus infinity
         if player == max_player:
-            best = {'position': None, 'score': -math.inf}  # each score should maximize
+            best = {'position': None, 'score': -math.inf}  
         else:
-            best = {'position': None, 'score': math.inf}  # each score should minimize
+            best = {'position': None, 'score': math.inf} 
+
+        # play the game in availalbe move
         for possible_move in state.available_moves():
             state.make_move(possible_move, player)
-            sim_score = self.minimax(state, other_player)  # simulate a game after making that move
+            sim_score = self.minimax(state, other_player, depth + 1)  
 
-            # undo move
+            # Reset the game state
             state.board[possible_move] = ' '
             state.current_winner = None
-            sim_score['position'] = possible_move  # this represents the move optimal next move
+            sim_score['position'] = possible_move  
 
-            if player == max_player:  # X is max player
+            # find the best score
+            if player == max_player:  
                 if sim_score['score'] > best['score']:
                     best = sim_score
             else:
