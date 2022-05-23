@@ -1,4 +1,7 @@
-
+"""
+    Tutorial from Kylie Ying, 12 Beginner Python Projects - Coding Course
+    Link: https://www.youtube.com/watch?v=8ext9G7xspg&t=4529s
+"""
 from player import DumbPlayer, HumanPlayer, AIPlayer
 from gui import GUI
 
